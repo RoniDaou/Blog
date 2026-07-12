@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import useAuthContext from "../hooks/useAuthContext";
 import Alert from "react-bootstrap/Alert";
-
+import { API_URL } from "../config";
 export default function WriteBlog({ setDisplayFooter }) {
   const location = useLocation();
   const prevBlog = location.state ? location.state.blog : null;
@@ -109,7 +109,7 @@ export default function WriteBlog({ setDisplayFooter }) {
     // Fetch the categories
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/categories/");
+        const res = await fetch(`${API_URL}/categories/');
         const data = await res.json();
         setCategories(data);
       } catch (error) {

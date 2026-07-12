@@ -5,7 +5,7 @@ import axios from "axios";
 import { LoadingContext } from "../context/LoadingContext";
 import { Alert } from "react-bootstrap";
 import { UserBlogsContext } from "../context/UserBlogsContext";
-
+import { API_URL } from "../config";
 export default function Account({ setDisplayFooter }) {
   // get the needed contexts
   const { user } = useAuthContext();
@@ -59,11 +59,14 @@ export default function Account({ setDisplayFooter }) {
     const getInfo = async () => {
       try {
         dispatch({ type: "LOAD" });
-        const response = await fetch("/user/info", {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
+        const response = await fetch(
+          "await fetch('${API_URL}/user/signup', {/user/info",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
           },
-        });
+        );
 
         const json = await response.json();
         setFormData({
@@ -100,7 +103,7 @@ export default function Account({ setDisplayFooter }) {
         if (idx === section) return !s;
 
         return s;
-      })
+      }),
     );
   }
 
@@ -118,7 +121,7 @@ export default function Account({ setDisplayFooter }) {
       setBlogsElement(
         userBlogs.map((blog, idx) => {
           return <BlogBoxUser blog={blog} key={idx} />;
-        })
+        }),
       );
     }
   }, [fetched, userBlogs]);
@@ -142,7 +145,7 @@ export default function Account({ setDisplayFooter }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
-        }
+        },
       );
 
       // approve the update

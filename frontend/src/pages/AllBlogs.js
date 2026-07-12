@@ -4,7 +4,7 @@ import Loader from "../components/Loader";
 import SearchBar from "../components/SearchBar";
 import BlogBoxAll from "../components/BlogBoxAll";
 import { LatestBlogsContext } from "../context/LatestBlogsContext";
-
+import { API_URL } from "../config";
 export default function AllBlogs({ setDisplayFooter }) {
   const { dispatch } = React.useContext(LoadingContext);
   const { latestBlogs, dispatch: blogsDispatch } =
@@ -19,7 +19,7 @@ export default function AllBlogs({ setDisplayFooter }) {
   const fetchLatest = async () => {
     try {
       dispatch({ type: "LOAD" });
-      const res = await fetch("/blogs/");
+      const res = await fetch(`${API_URL}/blogs/');
       const data = await res.json();
 
       if (res.ok) {

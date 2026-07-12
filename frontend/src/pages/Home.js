@@ -1,10 +1,11 @@
+import { API_URL } from "../config";
 import HomeBlogs from "../components/HomeBlogs";
 import RevealOnScroll from "../components/RevealOnScroll";
 import { LoadingContext } from "../context/LoadingContext";
 import React from "react";
 import { LatestBlogsContext } from "../context/LatestBlogsContext";
 import { PopularBlogsContext } from "../context/PopularBlogsContext";
-
+import { API_URL } from "../config";
 export default function Home({ setDisplayFooter }) {
   const { dispatch } = React.useContext(LoadingContext);
   const { latestBlogs, dispatch: latestBlogsDispatch } =
@@ -20,7 +21,7 @@ export default function Home({ setDisplayFooter }) {
   const fetchLatest = async () => {
     try {
       dispatch({ type: "LOAD" });
-      const res = await fetch("/blogs/");
+      const res = await fetch(`${API_URL}/blogs`);
       const data = await res.json();
 
       if (res.ok) {
@@ -36,7 +37,7 @@ export default function Home({ setDisplayFooter }) {
   const fetchPopular = async () => {
     try {
       dispatch({ type: "LOAD" });
-      const res = await fetch("/blogs/popularBlogs");
+      const res = await fetch(`${API_URL}/blogs/popularBlogs`);
       const data = await res.json();
 
       if (res.ok) {
