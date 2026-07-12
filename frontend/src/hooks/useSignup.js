@@ -12,12 +12,18 @@ export default function useSignup() {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch("${API_URL}/user/signup", {
+    const response = await fetch(`${API_URL}/user/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...state }),
     });
-    const json = await response.json();
+
+    console.log("HTTP Status:", response.status);
+
+    const text = await response.text();
+    console.log("Response body:", text);
+
+    const json = text ? JSON.parse(text) : {};
 
     if (!response.ok) {
       setIsLoading(false);
