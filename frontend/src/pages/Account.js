@@ -59,14 +59,11 @@ export default function Account({ setDisplayFooter }) {
     const getInfo = async () => {
       try {
         dispatch({ type: "LOAD" });
-        const response = await fetch(
-          "await fetch('${API_URL}/user/signup', {/user/info",
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
+        const response = await fetch(`${API_URL}/user/info`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
           },
-        );
+        });
 
         const json = await response.json();
         setFormData({

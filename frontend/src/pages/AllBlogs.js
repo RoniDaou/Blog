@@ -19,7 +19,7 @@ export default function AllBlogs({ setDisplayFooter }) {
   const fetchLatest = async () => {
     try {
       dispatch({ type: "LOAD" });
-      const res = await fetch(`${API_URL}/blogs/');
+      const res = await fetch(`${API_URL}/blogs/`);
       const data = await res.json();
 
       if (res.ok) {
@@ -41,7 +41,7 @@ export default function AllBlogs({ setDisplayFooter }) {
     setBlogsElement(
       latestBlogs.map((blog) => {
         return <BlogBoxAll blog={blog} />;
-      })
+      }),
     );
   }, [latestBlogs]);
 
