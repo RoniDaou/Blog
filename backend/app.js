@@ -1,3 +1,4 @@
+const cors = require("cors");
 //Importing Express
 const express = require("express");
 
@@ -9,6 +10,13 @@ const mongoose = require("mongoose");
 
 //Creating the Express App
 const app = express();
+
+app.use(
+  cors({
+    origin: ["https://blog-dar-1.onrender.com", "http://localhost:3000"],
+    credentials: true,
+  }),
+);
 
 const blogRoutes = require("./routes/blog");
 const userRoutes = require("./routes/user");
