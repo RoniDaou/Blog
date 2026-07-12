@@ -33,7 +33,7 @@ export default function WriteBlog({ setDisplayFooter }) {
   const addBlog = async () => {
     try {
       await axios.post(
-        "/blogs/createBlog",
+        `${API_URL}/blogs/createBlog`,
         {
           ...formData,
           content,
@@ -43,7 +43,7 @@ export default function WriteBlog({ setDisplayFooter }) {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
+        },
       );
 
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -69,7 +69,7 @@ export default function WriteBlog({ setDisplayFooter }) {
   const updateBlog = async () => {
     try {
       await axios.patch(
-        `/blogs/updateBlog/${prevBlog._id}`,
+        `${API_URL}/blogs/updateBlog/${prevBlog._id}`,
         {
           ...formData,
           content,
@@ -78,7 +78,7 @@ export default function WriteBlog({ setDisplayFooter }) {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
+        },
       );
       window.scrollTo({ top: 0, behavior: "smooth" });
       setIsUploaded(true);
@@ -109,7 +109,7 @@ export default function WriteBlog({ setDisplayFooter }) {
     // Fetch the categories
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${API_URL}/categories/');
+        const res = await fetch(`${API_URL}/categories/`);
         const data = await res.json();
         setCategories(data);
       } catch (error) {
@@ -127,7 +127,7 @@ export default function WriteBlog({ setDisplayFooter }) {
         <option key={category.id} value={category.name}>
           {category.name}
         </option>
-      ))
+      )),
     );
   }, [categories]);
 
@@ -189,7 +189,7 @@ export default function WriteBlog({ setDisplayFooter }) {
             animation="fadein"
           />
         );
-      })
+      }),
     );
 
     // delete the paragraph when the animation is finished
@@ -199,7 +199,7 @@ export default function WriteBlog({ setDisplayFooter }) {
 
       // Remove the last subtitle and the last body
       setContent((prev) =>
-        prev.filter((p, idx) => idx !== prev.length && idx + 1 !== prev.length)
+        prev.filter((p, idx) => idx !== prev.length && idx + 1 !== prev.length),
       );
     }, 700);
   }
@@ -219,7 +219,7 @@ export default function WriteBlog({ setDisplayFooter }) {
             animation="fadein"
           />
         );
-      })
+      }),
     );
   }, [paragraphs, content]);
 
