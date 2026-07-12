@@ -27,19 +27,11 @@ app.use("/categories", categoriesRoute);
 mongoose
   .connect(process.env.URI)
   .then(() => {
-    // Start the server and listen on the specified port
-    app.listen(
-      process.env.PORT,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-      () => {
-        // Callback function that runs when the server starts listening
-        console.log("Listening on port", process.env.PORT);
-        //console.log("Connection to the Database is successful");
-      }
-    );
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
   })
   .catch((error) => {
     console.log(error);
