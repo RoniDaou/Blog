@@ -220,87 +220,121 @@ const updateBlog = async (req, res) => {
 
 const likedBlog = async (req, res) => {
   try {
-    const user_id = req.user._id;
-    const blog_id = req.body._id;
+    const userId = req.user._id;
+    const blogId = req.body._id;
 
-    // Find the blog by its ID
-    const Blog = await blog.findById(blog_id);
+    if (!mongoose.Types.ObjectId.isValid(blogId)) {
+      return res.status(400).json({ message: "Invalid blog ID" });
+    }
 
-    if (!Blog) {
+    const existingBlog = await blog.findById(blogId);
+
+    if (!existingBlog) {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Check if the user has already liked the blog
-    const liked = Blog.likedby.includes(user_id); // return true or false
+    const alreadyLiked = existingBlog.likedby.some(
+      (id) => id.toString() === userId.toString(),
+    );
 
-    if (liked) {
-      // User has already liked the blog
-      Blog.likedby.pull(user_id);
-      await Blog.save();
-      return res.status(200).json({ message: "Blog already liked", Blog });
+    let updatedBlog;
+
+    if (alreadyLiked) {
+      // Clicking again removes the like.
+      updatedBlog = await blog
+        .findByIdAndUpdate(
+          blogId,
+          {
+            $pull: { likedby: userId },
+          },
+          { new: true },
+        )
+        .populate("image");
+    } else {
+      // Add like and remove any previous dislike.
+      updatedBlog = await blog
+        .findByIdAndUpdate(
+          blogId,
+          {
+            $addToSet: { likedby: userId },
+            $pull: { dislikedby: userId },
+          },
+          { new: true },
+        )
+        .populate("image");
     }
 
-    // Check if the user has disliked the blog
-    const disliked = Blog.dislikedby.includes(user_id);
-
-    if (disliked) {
-      // Remove user from dislikedby array
-      Blog.dislikedby.pull(user_id);
-    }
-
-    // Add user to likedby array
-    Blog.likedby.push(user_id);
-
-    // Save the updated blog
-    await Blog.save();
-
-    return res.status(200).json({ message: "Blog liked successfully", Blog });
+    return res.status(200).json({
+      message: alreadyLiked ? "Like removed" : "Blog liked",
+      blog: updatedBlog,
+    });
   } catch (error) {
-    return res.status(500).json({ message: "An error occurred", error });
+    console.error("Like error:", error);
+
+    return res.status(500).json({
+      message: "Could not update like",
+      error: error.message,
+    });
   }
 };
 
 const dislikedBlog = async (req, res) => {
   try {
-    const user_id = req.user._id;
-    const blog_id = req.body._id;
+    const userId = req.user._id;
+    const blogId = req.body._id;
 
-    // Find the blog by its ID
-    const Blog = await blog.findById(blog_id);
+    if (!mongoose.Types.ObjectId.isValid(blogId)) {
+      return res.status(400).json({ message: "Invalid blog ID" });
+    }
 
-    if (!Blog) {
+    const existingBlog = await blog.findById(blogId);
+
+    if (!existingBlog) {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Check if the user has already disliked the blog
-    const disliked = Blog.dislikedby.includes(user_id);
+    const alreadyDisliked = existingBlog.dislikedby.some(
+      (id) => id.toString() === userId.toString(),
+    );
 
-    if (disliked) {
-      // User already disliked the blog
-      Blog.dislikedby.pull(user_id);
-      await Blog.save();
-      return res.status(200).json({ message: "Blog already disliked", Blog });
+    let updatedBlog;
+
+    if (alreadyDisliked) {
+      // Clicking again removes the dislike.
+      updatedBlog = await blog
+        .findByIdAndUpdate(
+          blogId,
+          {
+            $pull: { dislikedby: userId },
+          },
+          { new: true },
+        )
+        .populate("image");
+    } else {
+      // Add dislike and remove any previous like.
+      updatedBlog = await blog
+        .findByIdAndUpdate(
+          blogId,
+          {
+            $addToSet: { dislikedby: userId },
+            $pull: { likedby: userId },
+          },
+          { new: true },
+        )
+        .populate("image");
     }
 
-    // Check if the user has liked the blog
-    const liked = Blog.likedby.includes(user_id);
-
-    if (liked) {
-      // Remove user from likedby array
-      Blog.likedby.pull(user_id);
-    }
-
-    // Add user to dislikedby array
-    Blog.dislikedby.push(user_id);
-
-    // Save the updated blog
-    await Blog.save();
-
-    return res
-      .status(200)
-      .json({ message: "Blog disliked successfully", Blog });
+    return res.status(200).json({
+      message: alreadyDisliked ? "Dislike removed" : "Blog disliked",
+      blog: updatedBlog,
+    });
   } catch (error) {
-    return res.status(500).json({ message: "An error occurred", error });
+    console.error("Dislike error:", error);
+
+    return res.status(500).json({
+      message: "Could not update dislike",
+      error: error.message,
+    });
   }
 };
 
