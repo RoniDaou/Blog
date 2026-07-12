@@ -43,7 +43,7 @@ export default function BlogBox({ blog }) {
         },
       );
 
-      const updatedBlog = response.data.blog;
+      const updatedBlog = response.data.blog || response.data.Blog;
       const userId = user._id || user.id;
 
       latestBlogsDispatch({
@@ -83,7 +83,7 @@ export default function BlogBox({ blog }) {
         },
       );
 
-      const updatedBlog = response.data.blog;
+      const updatedBlog = response.data.blog || response.data.Blog;
       const userId = user._id || user.id;
 
       latestBlogsDispatch({
