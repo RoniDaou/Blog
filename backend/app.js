@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://blog-dar-1.onrender.com", "http://localhost:3000"],
+    origin: ["https://blog-1.onrender.com", "http://localhost:3000"],
     credentials: true,
   }),
 );
