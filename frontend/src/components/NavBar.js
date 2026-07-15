@@ -17,10 +17,15 @@ export default function NavBar() {
   return (
     <header className="site-header">
       <nav className="site-nav" aria-label="Primary navigation">
-        <Link to="/" className="brand" onClick={closeMenu} aria-label="BlogMix home">
+        <Link
+          to="/"
+          className="brand"
+          onClick={closeMenu}
+          aria-label="The Daily Blog home"
+        >
           <span className="brand-mark">B</span>
           <span className="brand-copy">
-            <strong>BlogMix</strong>
+            <strong>DailyBlog</strong>
             <small>Ideas worth sharing</small>
           </span>
         </Link>
@@ -44,7 +49,9 @@ export default function NavBar() {
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                className={({ isActive }) =>
+                  `nav-link${isActive ? " active" : ""}`
+                }
                 onClick={closeMenu}
               >
                 <span className="material-symbols-rounded">{item.icon}</span>
@@ -55,7 +62,9 @@ export default function NavBar() {
             {user && (
               <NavLink
                 to="/write"
-                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                className={({ isActive }) =>
+                  `nav-link${isActive ? " active" : ""}`
+                }
                 onClick={closeMenu}
               >
                 <span className="material-symbols-rounded">edit_square</span>
@@ -66,7 +75,9 @@ export default function NavBar() {
             {user && (
               <NavLink
                 to="/account"
-                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                className={({ isActive }) =>
+                  `nav-link${isActive ? " active" : ""}`
+                }
                 onClick={closeMenu}
               >
                 <span className="material-symbols-rounded">person</span>
@@ -77,18 +88,29 @@ export default function NavBar() {
 
           <div className="nav-actions">
             {!user ? (
-              <NavLink to="/signInUp" className="nav-sign-in" onClick={closeMenu}>
+              <NavLink
+                to="/signInUp"
+                className="nav-sign-in"
+                onClick={closeMenu}
+              >
                 Sign in
               </NavLink>
             ) : (
               <>
                 <Link to="/account" className="nav-user" onClick={closeMenu}>
                   <span className="nav-user-avatar">
-                    {(user.first_name || user.email || "U").charAt(0).toUpperCase()}
+                    {(user.first_name || user.email || "U")
+                      .charAt(0)
+                      .toUpperCase()}
                   </span>
                   <span className="nav-user-label">My account</span>
                 </Link>
-                <NavLink to="/logout" className="nav-logout" onClick={closeMenu} aria-label="Log out">
+                <NavLink
+                  to="/logout"
+                  className="nav-logout"
+                  onClick={closeMenu}
+                  aria-label="Log out"
+                >
                   <span className="material-symbols-rounded">logout</span>
                 </NavLink>
               </>

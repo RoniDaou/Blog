@@ -10,8 +10,10 @@ import useAuthContext from "../hooks/useAuthContext";
 
 export default function Home({ setDisplayFooter }) {
   const { dispatch } = React.useContext(LoadingContext);
-  const { latestBlogs, dispatch: latestBlogsDispatch } = React.useContext(LatestBlogsContext);
-  const { popularBlogs, dispatch: popularBlogsDispatch } = React.useContext(PopularBlogsContext);
+  const { latestBlogs, dispatch: latestBlogsDispatch } =
+    React.useContext(LatestBlogsContext);
+  const { popularBlogs, dispatch: popularBlogsDispatch } =
+    React.useContext(PopularBlogsContext);
   const { user } = useAuthContext();
 
   React.useEffect(() => {
@@ -50,7 +52,9 @@ export default function Home({ setDisplayFooter }) {
 
   const featuredBlog = latestBlogs[0] || popularBlogs[0];
   const featuredExcerpt = Array.isArray(featuredBlog?.content)
-    ? featuredBlog.content.find((item, index) => index % 2 === 1 && item)?.slice(0, 190)
+    ? featuredBlog.content
+        .find((item, index) => index % 2 === 1 && item)
+        ?.slice(0, 190)
     : "";
 
   return (
@@ -58,19 +62,25 @@ export default function Home({ setDisplayFooter }) {
       <section className="home-hero">
         <div className="hero-copy">
           <span className="hero-kicker">
-            <span className="material-symbols-rounded">auto_awesome</span>
-            A smarter home for great stories
+            <span className="material-symbols-rounded">auto_awesome</span>A
+            smarter home for great stories
           </span>
-          <h1>Discover ideas that make you <em>pause, think, and connect.</em></h1>
+          <h1>
+            Discover ideas that make you <em>pause, think, and connect.</em>
+          </h1>
           <p>
-            BlogMix brings thoughtful voices into one modern reading experience. Explore fresh perspectives or share a story of your own.
+            DailyBlog brings thoughtful voices into one modern reading
+            experience. Explore fresh perspectives or share a story of your own.
           </p>
           <div className="hero-actions">
             <Link to="/blogs" className="primary-button">
               Explore stories
               <span className="material-symbols-rounded">arrow_forward</span>
             </Link>
-            <Link to={user ? "/write" : "/signInUp"} className="secondary-button">
+            <Link
+              to={user ? "/write" : "/signInUp"}
+              className="secondary-button"
+            >
               <span className="material-symbols-rounded">edit_square</span>
               {user ? "Start writing" : "Join the community"}
             </Link>
@@ -95,24 +105,43 @@ export default function Home({ setDisplayFooter }) {
           <div className="hero-orb hero-orb--one" />
           <div className="hero-orb hero-orb--two" />
           {featuredBlog ? (
-            <Link className="featured-story" state={{ blog: featuredBlog }} to="/blog">
+            <Link
+              className="featured-story"
+              state={{ blog: featuredBlog }}
+              to="/blog"
+            >
               <div
                 className="featured-story__image"
-                style={featuredBlog.image?.image ? { backgroundImage: `url(${featuredBlog.image.image})` } : undefined}
+                style={
+                  featuredBlog.image?.image
+                    ? { backgroundImage: `url(${featuredBlog.image.image})` }
+                    : undefined
+                }
               >
                 <span>Featured story</span>
               </div>
               <div className="featured-story__content">
-                <span className="featured-story__category">{featuredBlog.category}</span>
+                <span className="featured-story__category">
+                  {featuredBlog.category}
+                </span>
                 <h2>{featuredBlog.title}</h2>
-                {featuredExcerpt && <p>{featuredExcerpt}{featuredExcerpt.length === 190 ? "…" : ""}</p>}
+                {featuredExcerpt && (
+                  <p>
+                    {featuredExcerpt}
+                    {featuredExcerpt.length === 190 ? "…" : ""}
+                  </p>
+                )}
                 <div className="featured-story__meta">
-                  <span className="author-avatar">{(featuredBlog.author || "A").charAt(0).toUpperCase()}</span>
+                  <span className="author-avatar">
+                    {(featuredBlog.author || "A").charAt(0).toUpperCase()}
+                  </span>
                   <div>
                     <strong>{featuredBlog.author}</strong>
                     <span>Read the full story</span>
                   </div>
-                  <span className="material-symbols-rounded featured-arrow">north_east</span>
+                  <span className="material-symbols-rounded featured-arrow">
+                    north_east
+                  </span>
                 </div>
               </div>
             </Link>

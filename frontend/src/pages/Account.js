@@ -206,7 +206,7 @@ export default function Account({ setDisplayFooter }) {
             <p>
               {formData.email ||
                 user?.email ||
-                "Member of the BlogMix community"}
+                "Member of the DailyBlog community"}
             </p>
             <div className="profile-stats">
               <div>
