@@ -17,20 +17,35 @@ export default function SingleBlog({ setDisplayFooter }) {
         <span className="material-symbols-rounded">article</span>
         <h1>This story is not available from a direct link.</h1>
         <p>Return to the story library and open it again.</p>
-        <Link to="/blogs" className="primary-button">Browse stories</Link>
+        <Link to="/blogs" className="primary-button">
+          Browse stories
+        </Link>
       </main>
     );
   }
 
-  const { title, content: contentArr = [], category, author, datePublished } = blog;
+  const {
+    title,
+    content: contentArr = [],
+    category,
+    author,
+    datePublished,
+  } = blog;
   const date = new Date(datePublished);
-  const wordCount = contentArr.join(" ").trim().split(/\s+/).filter(Boolean).length;
+  const wordCount = contentArr
+    .join(" ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
     <main className="single-blog--container">
       <div className="article-breadcrumb">
-        <Link to="/blogs"><span className="material-symbols-rounded">arrow_back</span>All stories</Link>
+        <Link to="/blogs">
+          <span className="material-symbols-rounded">arrow_back</span>All
+          stories
+        </Link>
         <span>/</span>
         <span>{category}</span>
       </div>
@@ -39,19 +54,30 @@ export default function SingleBlog({ setDisplayFooter }) {
         <header className="single-blog--all-title">
           <span className="story-list-card__category">{category}</span>
           <h1 className="single-blog--title">{title}</h1>
-          <p className="article-deck">A story shared with the BlogMix community.</p>
+          <p className="article-deck">
+            A story shared with the DailyBlog community.
+          </p>
 
           <div className="article-author-row">
-            <span className="article-author-avatar">{(author || "A").charAt(0).toUpperCase()}</span>
+            <span className="article-author-avatar">
+              {(author || "A").charAt(0).toUpperCase()}
+            </span>
             <div>
               <strong>{author}</strong>
-              <span>{`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`} · {readingTime} min read</span>
+              <span>
+                {`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}{" "}
+                · {readingTime} min read
+              </span>
             </div>
           </div>
         </header>
 
         <div className="article-image-wrap">
-          <img className="single-blog--img" src={blog.image?.image} alt={title} />
+          <img
+            className="single-blog--img"
+            src={blog.image?.image}
+            alt={title}
+          />
         </div>
 
         <div className="article-layout">
@@ -62,13 +88,17 @@ export default function SingleBlog({ setDisplayFooter }) {
           </aside>
 
           <div className="article-content">
-            {contentArr.map((item, index) => (
+            {contentArr.map((item, index) =>
               index % 2 === 0 ? (
-                <h2 key={index} className="single-blog--subtitle">{item}</h2>
+                <h2 key={index} className="single-blog--subtitle">
+                  {item}
+                </h2>
               ) : (
-                <p key={index} className="single-blog--p">{item}</p>
-              )
-            ))}
+                <p key={index} className="single-blog--p">
+                  {item}
+                </p>
+              ),
+            )}
           </div>
         </div>
 
@@ -76,9 +106,11 @@ export default function SingleBlog({ setDisplayFooter }) {
           <span className="material-symbols-rounded">auto_stories</span>
           <div>
             <strong>Thanks for reading.</strong>
-            <p>Keep exploring perspectives from the BlogMix community.</p>
+            <p>Keep exploring perspectives from the DailyBlog community.</p>
           </div>
-          <Link to="/blogs" className="secondary-button">Explore more</Link>
+          <Link to="/blogs" className="secondary-button">
+            Explore more
+          </Link>
         </footer>
       </article>
     </main>

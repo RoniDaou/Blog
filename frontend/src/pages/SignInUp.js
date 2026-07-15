@@ -14,14 +14,31 @@ export default function SignInUp({ setDisplayFooter }) {
       <div className="auth-shell">
         <section className="auth-showcase">
           <div className="auth-showcase__content">
-            <span className="auth-brand"><span className="brand-mark">B</span>BlogMix</span>
-            <span className="hero-kicker"><span className="material-symbols-rounded">auto_awesome</span>Write. Share. Connect.</span>
+            <span className="auth-brand">
+              <span className="brand-mark">B</span>The Daily Blog
+            </span>
+            <span className="hero-kicker">
+              <span className="material-symbols-rounded">auto_awesome</span>
+              Write. Share. Connect.
+            </span>
             <h1>Your ideas deserve a beautiful place to live.</h1>
-            <p>Join a modern publishing community built for thoughtful stories and meaningful conversations.</p>
+            <p>
+              Join a modern publishing community built for thoughtful stories
+              and meaningful conversations.
+            </p>
             <div className="auth-benefits">
-              <div><span className="material-symbols-rounded">check_circle</span><span>Publish stories in minutes</span></div>
-              <div><span className="material-symbols-rounded">check_circle</span><span>Build your personal profile</span></div>
-              <div><span className="material-symbols-rounded">check_circle</span><span>Connect through reader reactions</span></div>
+              <div>
+                <span className="material-symbols-rounded">check_circle</span>
+                <span>Publish stories in minutes</span>
+              </div>
+              <div>
+                <span className="material-symbols-rounded">check_circle</span>
+                <span>Build your personal profile</span>
+              </div>
+              <div>
+                <span className="material-symbols-rounded">check_circle</span>
+                <span>Connect through reader reactions</span>
+              </div>
             </div>
           </div>
           <div className="auth-decoration auth-decoration--one" />
@@ -29,7 +46,11 @@ export default function SignInUp({ setDisplayFooter }) {
         </section>
 
         <section className="auth-panel">
-          <div className="auth-tabs" role="tablist" aria-label="Authentication options">
+          <div
+            className="auth-tabs"
+            role="tablist"
+            aria-label="Authentication options"
+          >
             <button
               type="button"
               className={type === "signIn" ? "active" : ""}

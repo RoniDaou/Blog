@@ -6,7 +6,10 @@ function SignIn({ handleOnClick }) {
   const { login, error } = useLogin();
 
   const handleChange = (event) => {
-    setState((previous) => ({ ...previous, [event.target.name]: event.target.value }));
+    setState((previous) => ({
+      ...previous,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleOnSubmit = (event) => {
@@ -18,7 +21,7 @@ function SignIn({ handleOnClick }) {
     <form className="auth-form" onSubmit={handleOnSubmit}>
       <div className="auth-form__heading">
         <span className="section-eyebrow">Welcome back</span>
-        <h2>Sign in to BlogMix</h2>
+        <h2>Sign in to DailyBlog</h2>
         <p>Continue reading, writing, and managing your stories.</p>
       </div>
 
@@ -54,14 +57,24 @@ function SignIn({ handleOnClick }) {
         </div>
       </div>
 
-      {error && <p className="form-error"><span className="material-symbols-rounded">error</span>{error}</p>}
+      {error && (
+        <p className="form-error">
+          <span className="material-symbols-rounded">error</span>
+          {error}
+        </p>
+      )}
 
       <button type="submit" className="primary-button auth-submit">
         Sign in
         <span className="material-symbols-rounded">arrow_forward</span>
       </button>
 
-      <p className="auth-switch">New to BlogMix? <button type="button" onClick={() => handleOnClick("signUp")}>Create an account</button></p>
+      <p className="auth-switch">
+        New to DailyBlog?{" "}
+        <button type="button" onClick={() => handleOnClick("signUp")}>
+          Create an account
+        </button>
+      </p>
     </form>
   );
 }

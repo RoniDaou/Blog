@@ -42,7 +42,9 @@ export default function WriteBlog({ setDisplayFooter }) {
       setImage("");
       setTimeout(() => setIsUploaded(false), 2500);
     } catch (requestError) {
-      setError("The cover image may be too large. Please choose a smaller file and try again.");
+      setError(
+        "The cover image may be too large. Please choose a smaller file and try again.",
+      );
     }
   };
 
@@ -67,7 +69,8 @@ export default function WriteBlog({ setDisplayFooter }) {
       setContent(prevBlog.content);
       setParagraphs(() => {
         const sections = [];
-        for (let index = 0; index < prevBlog.content.length; index += 2) sections.push(index);
+        for (let index = 0; index < prevBlog.content.length; index += 2)
+          sections.push(index);
         return sections;
       });
     }
@@ -92,7 +95,10 @@ export default function WriteBlog({ setDisplayFooter }) {
   }
 
   function addParagraph() {
-    setParagraphs((previous) => [...previous, previous[previous.length - 1] + 2]);
+    setParagraphs((previous) => [
+      ...previous,
+      previous[previous.length - 1] + 2,
+    ]);
     setContent((previous) => [...previous, "", ""]);
   }
 
@@ -144,7 +150,9 @@ export default function WriteBlog({ setDisplayFooter }) {
     }
 
     if (!formData.title || !formData.category || !image) {
-      setError("Please add a title, category, and cover image before publishing.");
+      setError(
+        "Please add a title, category, and cover image before publishing.",
+      );
       return;
     }
 
@@ -167,7 +175,10 @@ export default function WriteBlog({ setDisplayFooter }) {
           <div>
             <span className="section-eyebrow">Creator studio</span>
             <h1>{prevBlog ? "Edit your story" : "Create a new story"}</h1>
-            <p>Shape your ideas into a polished article for the BlogMix community.</p>
+            <p>
+              Shape your ideas into a polished article for the Daily-Blog
+              community.
+            </p>
           </div>
           <div className="editor-status">
             <span className="status-dot" />
@@ -180,7 +191,9 @@ export default function WriteBlog({ setDisplayFooter }) {
             {isUploaded && (
               <Alert className="editor-alert" variant="success">
                 <span className="material-symbols-rounded">check_circle</span>
-                {prevBlog ? "Your changes were saved successfully." : "Your story was published successfully."}
+                {prevBlog
+                  ? "Your changes were saved successfully."
+                  : "Your story was published successfully."}
               </Alert>
             )}
 
@@ -194,7 +207,9 @@ export default function WriteBlog({ setDisplayFooter }) {
               </div>
 
               <div className="editor-field">
-                <label htmlFor="title">Story title <span>*</span></label>
+                <label htmlFor="title">
+                  Story title <span>*</span>
+                </label>
                 <input
                   id="title"
                   type="text"
@@ -207,11 +222,23 @@ export default function WriteBlog({ setDisplayFooter }) {
               </div>
 
               <div className="editor-field">
-                <label htmlFor="category">Category <span>*</span></label>
-                <select id="category" name="category" value={formData.category} onChange={handleChange}>
+                <label htmlFor="category">
+                  Category <span>*</span>
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
                   <option value="">Select a category</option>
                   {categories.map((category) => (
-                    <option key={category._id || category.id || category.name} value={category.name}>{category.name}</option>
+                    <option
+                      key={category._id || category.id || category.name}
+                      value={category.name}
+                    >
+                      {category.name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -223,7 +250,9 @@ export default function WriteBlog({ setDisplayFooter }) {
                   <span className="editor-step">02</span>
                   <div>
                     <h2>Cover image</h2>
-                    <p>Choose a high-quality image that represents your story.</p>
+                    <p>
+                      Choose a high-quality image that represents your story.
+                    </p>
                   </div>
                 </div>
 
@@ -232,14 +261,25 @@ export default function WriteBlog({ setDisplayFooter }) {
                     <img src={image} alt="Story cover preview" />
                   ) : (
                     <div className="cover-upload__empty">
-                      <span className="material-symbols-rounded">add_photo_alternate</span>
+                      <span className="material-symbols-rounded">
+                        add_photo_alternate
+                      </span>
                       <strong>Upload a cover image</strong>
                       <p>PNG or JPG. Use a wide image for the best result.</p>
                       <span className="secondary-button">Choose image</span>
                     </div>
                   )}
-                  <input accept="image/*" type="file" onChange={handleFileChange} />
-                  {image && <span className="cover-change-label"><span className="material-symbols-rounded">edit</span>Change image</span>}
+                  <input
+                    accept="image/*"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                  {image && (
+                    <span className="cover-change-label">
+                      <span className="material-symbols-rounded">edit</span>
+                      Change image
+                    </span>
+                  )}
                 </label>
               </section>
             )}
@@ -254,18 +294,32 @@ export default function WriteBlog({ setDisplayFooter }) {
               </div>
 
               <div className="paragraphs-list">{paragraphsElement}</div>
-              <button type="button" onClick={addParagraph} className="add-section-button">
+              <button
+                type="button"
+                onClick={addParagraph}
+                className="add-section-button"
+              >
                 <span className="material-symbols-rounded">add</span>
                 Add another section
               </button>
             </section>
 
-            {error && <p className="form-error editor-error"><span className="material-symbols-rounded">error</span>{error}</p>}
+            {error && (
+              <p className="form-error editor-error">
+                <span className="material-symbols-rounded">error</span>
+                {error}
+              </p>
+            )}
 
             <div className="editor-submit-row">
-              <p><span className="material-symbols-rounded">info</span>Your story will be visible to all readers after publishing.</p>
+              <p>
+                <span className="material-symbols-rounded">info</span>Your story
+                will be visible to all readers after publishing.
+              </p>
               <button className="primary-button publish-button" type="submit">
-                <span className="material-symbols-rounded">{prevBlog ? "save" : "publish"}</span>
+                <span className="material-symbols-rounded">
+                  {prevBlog ? "save" : "publish"}
+                </span>
                 {prevBlog ? "Save changes" : "Publish story"}
               </button>
             </div>
@@ -273,20 +327,37 @@ export default function WriteBlog({ setDisplayFooter }) {
 
           <aside className="editor-sidebar">
             <div className="editor-sidebar__card">
-              <span className="material-symbols-rounded sidebar-icon">tips_and_updates</span>
+              <span className="material-symbols-rounded sidebar-icon">
+                tips_and_updates
+              </span>
               <h3>Publishing checklist</h3>
               <ul>
-                <li><span className="material-symbols-rounded">check</span>Use a clear, specific title</li>
-                <li><span className="material-symbols-rounded">check</span>Choose the most relevant category</li>
-                <li><span className="material-symbols-rounded">check</span>Break long text into sections</li>
-                <li><span className="material-symbols-rounded">check</span>Review spelling before publishing</li>
+                <li>
+                  <span className="material-symbols-rounded">check</span>Use a
+                  clear, specific title
+                </li>
+                <li>
+                  <span className="material-symbols-rounded">check</span>Choose
+                  the most relevant category
+                </li>
+                <li>
+                  <span className="material-symbols-rounded">check</span>Break
+                  long text into sections
+                </li>
+                <li>
+                  <span className="material-symbols-rounded">check</span>Review
+                  spelling before publishing
+                </li>
               </ul>
             </div>
             <div className="editor-sidebar__note">
               <span className="material-symbols-rounded">shield</span>
               <div>
                 <strong>Your work stays yours.</strong>
-                <p>You can edit or delete your published stories from your profile.</p>
+                <p>
+                  You can edit or delete your published stories from your
+                  profile.
+                </p>
               </div>
             </div>
           </aside>

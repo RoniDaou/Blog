@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 export default function Account({ setDisplayFooter }) {
   const { user } = useAuthContext();
   const { dispatch } = React.useContext(LoadingContext);
-  const { userBlogs, dispatch: userBlogsDispatch } = React.useContext(UserBlogsContext);
+  const { userBlogs, dispatch: userBlogsDispatch } =
+    React.useContext(UserBlogsContext);
 
   const [formData, setFormData] = React.useState(null);
   const [edit, setEdit] = React.useState([false, false]);
@@ -62,12 +63,17 @@ export default function Account({ setDisplayFooter }) {
 
   function handleChange(event) {
     setError("");
-    setFormData((previous) => ({ ...previous, [event.target.name]: event.target.value }));
+    setFormData((previous) => ({
+      ...previous,
+      [event.target.name]: event.target.value,
+    }));
   }
 
   function handleEdit(section) {
     setError("");
-    setEdit((previous) => previous.map((value, index) => (index === section ? !value : value)));
+    setEdit((previous) =>
+      previous.map((value, index) => (index === section ? !value : value)),
+    );
   }
 
   React.useEffect(() => {
@@ -78,7 +84,8 @@ export default function Account({ setDisplayFooter }) {
   }, [formData, fetched]);
 
   React.useEffect(() => {
-    if (formData) userBlogsDispatch({ type: "SET_BLOGS", blogs: formData.userBlogs || [] });
+    if (formData)
+      userBlogsDispatch({ type: "SET_BLOGS", blogs: formData.userBlogs || [] });
   }, [formData, userBlogsDispatch]);
 
   const uploadImage = async () => {
@@ -86,7 +93,12 @@ export default function Account({ setDisplayFooter }) {
       await axios.post(
         "/user/uploadPic",
         { image: imageSrc },
-        { headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` } },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        },
       );
       setIsUpdated(true);
       setCurrentProfile(imageSrc);
@@ -102,22 +114,38 @@ export default function Account({ setDisplayFooter }) {
     let toSend;
 
     if (sectionName === "password") {
-      if (!formData.password || formData.password !== formData.confirmPassword) {
-        setError(!formData.password ? "Enter a new password." : "The passwords do not match.");
+      if (
+        !formData.password ||
+        formData.password !== formData.confirmPassword
+      ) {
+        setError(
+          !formData.password
+            ? "Enter a new password."
+            : "The passwords do not match.",
+        );
         return;
       }
       toSend = { password: formData.password };
     } else {
-      toSend = { first_name: formData.first_name, last_name: formData.last_name };
+      toSend = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+      };
     }
 
     try {
       await axios.patch("/user/updateInfo", toSend, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
       });
       setIsUpdated(true);
       setEdit([false, false]);
-      profileRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      profileRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       setTimeout(() => setIsUpdated(false), 2500);
     } catch (requestError) {
       console.log(requestError);
@@ -127,13 +155,16 @@ export default function Account({ setDisplayFooter }) {
   if (!fetched) return null;
 
   const displayedImage = imageSrc || currentProfile;
-  const fullName = `${formData.first_name || ""} ${formData.last_name || ""}`.trim() || "BlogMix creator";
+  const fullName =
+    `${formData.first_name || ""} ${formData.last_name || ""}`.trim() ||
+    "DailyBlog creator";
 
   return (
     <main className="account-page" ref={profileRef}>
       {isUpdated && (
         <Alert className="account-success" variant="success">
-          <span className="material-symbols-rounded">check_circle</span>Profile updated successfully.
+          <span className="material-symbols-rounded">check_circle</span>Profile
+          updated successfully.
         </Alert>
       )}
 
@@ -141,13 +172,30 @@ export default function Account({ setDisplayFooter }) {
         <div className="profile-hero__pattern" />
         <div className="profile-hero__content">
           <div className="profile-photo-wrap">
-            <input accept="image/*" type="file" ref={fileInputRef} onChange={handleFileChange} hidden />
+            <input
+              accept="image/*"
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              hidden
+            />
             {displayedImage ? (
-              <img src={displayedImage} alt={`${fullName} profile`} className="profile-img" />
+              <img
+                src={displayedImage}
+                alt={`${fullName} profile`}
+                className="profile-img"
+              />
             ) : (
-              <span className="profile-placeholder">{fullName.charAt(0).toUpperCase()}</span>
+              <span className="profile-placeholder">
+                {fullName.charAt(0).toUpperCase()}
+              </span>
             )}
-            <button type="button" className="profile-photo-button" onClick={handleImageClick} aria-label="Change profile picture">
+            <button
+              type="button"
+              className="profile-photo-button"
+              onClick={handleImageClick}
+              aria-label="Change profile picture"
+            >
               <span className="material-symbols-rounded">photo_camera</span>
             </button>
           </div>
@@ -155,21 +203,53 @@ export default function Account({ setDisplayFooter }) {
           <div className="profile-identity">
             <span className="section-eyebrow">Creator profile</span>
             <h1>{fullName}</h1>
-            <p>{formData.email || user?.email || "Member of the BlogMix community"}</p>
+            <p>
+              {formData.email ||
+                user?.email ||
+                "Member of the BlogMix community"}
+            </p>
             <div className="profile-stats">
-              <div><strong>{userBlogs.length}</strong><span>Published</span></div>
-              <div><strong>{userBlogs.reduce((sum, blog) => sum + (blog.likedby || []).length, 0)}</strong><span>Total likes</span></div>
+              <div>
+                <strong>{userBlogs.length}</strong>
+                <span>Published</span>
+              </div>
+              <div>
+                <strong>
+                  {userBlogs.reduce(
+                    (sum, blog) => sum + (blog.likedby || []).length,
+                    0,
+                  )}
+                </strong>
+                <span>Total likes</span>
+              </div>
             </div>
           </div>
 
           {imageSrc && (
             <div className="profile-image-actions">
-              <button type="button" className="primary-button" onClick={uploadImage}>Save photo</button>
-              <button type="button" className="text-button" onClick={() => setImageSrc("")}>Cancel</button>
+              <button
+                type="button"
+                className="primary-button"
+                onClick={uploadImage}
+              >
+                Save photo
+              </button>
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => setImageSrc("")}
+              >
+                Cancel
+              </button>
             </div>
           )}
         </div>
-        {invalidPic && <p className="form-error profile-image-error"><span className="material-symbols-rounded">error</span>Please choose a valid image.</p>}
+        {invalidPic && (
+          <p className="form-error profile-image-error">
+            <span className="material-symbols-rounded">error</span>Please choose
+            a valid image.
+          </p>
+        )}
       </section>
 
       <div className="account-layout">
@@ -180,7 +260,9 @@ export default function Account({ setDisplayFooter }) {
               <h2>Profile settings</h2>
               <p>Keep your public details and account security up to date.</p>
             </div>
-            <span className="material-symbols-rounded settings-heading-icon">manage_accounts</span>
+            <span className="material-symbols-rounded settings-heading-icon">
+              manage_accounts
+            </span>
           </div>
 
           <div className="settings-section">
@@ -190,13 +272,30 @@ export default function Account({ setDisplayFooter }) {
                 <p>This name appears on every story you publish.</p>
               </div>
               {!edit[0] ? (
-                <button type="button" className="edit-section-button" onClick={() => handleEdit(0)}>
+                <button
+                  type="button"
+                  className="edit-section-button"
+                  onClick={() => handleEdit(0)}
+                >
                   <span className="material-symbols-rounded">edit</span>Edit
                 </button>
               ) : (
                 <div className="settings-actions">
-                  <button type="button" className="small-primary-button" onClick={updateInfo} name="name">Save</button>
-                  <button type="button" className="small-secondary-button" onClick={() => handleEdit(0)}>Cancel</button>
+                  <button
+                    type="button"
+                    className="small-primary-button"
+                    onClick={updateInfo}
+                    name="name"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="small-secondary-button"
+                    onClick={() => handleEdit(0)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               )}
             </div>
@@ -205,7 +304,13 @@ export default function Account({ setDisplayFooter }) {
               <div className="settings-field">
                 <label htmlFor="first_name">First name</label>
                 {edit[0] ? (
-                  <input id="first_name" type="text" name="first_name" value={formData.first_name} onChange={handleChange} />
+                  <input
+                    id="first_name"
+                    type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                  />
                 ) : (
                   <p>{formData.first_name}</p>
                 )}
@@ -213,7 +318,13 @@ export default function Account({ setDisplayFooter }) {
               <div className="settings-field">
                 <label htmlFor="last_name">Last name</label>
                 {edit[0] ? (
-                  <input id="last_name" type="text" name="last_name" value={formData.last_name} onChange={handleChange} />
+                  <input
+                    id="last_name"
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                  />
                 ) : (
                   <p>{formData.last_name}</p>
                 )}
@@ -228,13 +339,31 @@ export default function Account({ setDisplayFooter }) {
                 <p>Use a strong password you do not reuse elsewhere.</p>
               </div>
               {!edit[1] ? (
-                <button type="button" className="edit-section-button" onClick={() => handleEdit(1)}>
-                  <span className="material-symbols-rounded">lock_reset</span>Change
+                <button
+                  type="button"
+                  className="edit-section-button"
+                  onClick={() => handleEdit(1)}
+                >
+                  <span className="material-symbols-rounded">lock_reset</span>
+                  Change
                 </button>
               ) : (
                 <div className="settings-actions">
-                  <button type="button" className="small-primary-button" onClick={updateInfo} name="password">Save</button>
-                  <button type="button" className="small-secondary-button" onClick={() => handleEdit(1)}>Cancel</button>
+                  <button
+                    type="button"
+                    className="small-primary-button"
+                    onClick={updateInfo}
+                    name="password"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="small-secondary-button"
+                    onClick={() => handleEdit(1)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               )}
             </div>
@@ -243,7 +372,14 @@ export default function Account({ setDisplayFooter }) {
               <div className="settings-field">
                 <label htmlFor="password">New password</label>
                 {edit[1] ? (
-                  <input id="password" type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Enter new password" />
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter new password"
+                  />
                 ) : (
                   <p>••••••••••••</p>
                 )}
@@ -251,11 +387,23 @@ export default function Account({ setDisplayFooter }) {
               {edit[1] && (
                 <div className="settings-field">
                   <label htmlFor="confirmPassword">Confirm password</label>
-                  <input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Repeat new password" />
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Repeat new password"
+                  />
                 </div>
               )}
             </div>
-            {edit[1] && error && <p className="form-error settings-error"><span className="material-symbols-rounded">error</span>{error}</p>}
+            {edit[1] && error && (
+              <p className="form-error settings-error">
+                <span className="material-symbols-rounded">error</span>
+                {error}
+              </p>
+            )}
           </div>
         </section>
 
@@ -266,7 +414,9 @@ export default function Account({ setDisplayFooter }) {
               <h2>Published stories</h2>
               <p>Manage the content you have shared with the community.</p>
             </div>
-            <Link className="primary-button" to="/write"><span className="material-symbols-rounded">add</span>New story</Link>
+            <Link className="primary-button" to="/write">
+              <span className="material-symbols-rounded">add</span>New story
+            </Link>
           </div>
 
           <div className="profile-stories-list">
@@ -277,7 +427,9 @@ export default function Account({ setDisplayFooter }) {
                 <p>Your stories will appear here after you publish them.</p>
               </div>
             ) : (
-              userBlogs.map((blog) => <BlogBoxUser blog={blog} key={blog._id || blog.title} />)
+              userBlogs.map((blog) => (
+                <BlogBoxUser blog={blog} key={blog._id || blog.title} />
+              ))
             )}
           </div>
         </section>

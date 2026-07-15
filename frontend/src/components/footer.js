@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="footer-brand-block">
             <Link to="/" className="footer-brand">
               <span className="brand-mark">B</span>
-              <strong>BlogMix</strong>
+              <strong>The Daily Blog</strong>
             </Link>
             <p className="footer-text">
               A thoughtful space for stories, perspectives, and ideas that bring
@@ -67,7 +67,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} BlogMix. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} DailyBlog. All rights reserved.</p>
           <p>Built for meaningful publishing.</p>
         </div>
       </div>
