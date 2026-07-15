@@ -1,13 +1,12 @@
 <div align="center">
 
-<h3 align="center">The Blog Mix</h3>
+<h3 align="center">The Daily Blog</h3>
 
   <p align="center">
-    Blog Smarter, Not Harder with The Blog Mix!
+    Blog Smarter, Not Harder with The Daily Blog!
     <br />
   </p>
 </div>
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -26,14 +25,13 @@
   </ol>
 </details>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 ### Introduction
 
 Welcome to our full-stack web app! In the chaos of everyday life, sharing your voice can feel overwhelming. Out of that struggle, this blog platform emerged as a solution to help you express yourself and connect with others effortlessly.
-
 
 ### Features
 
@@ -41,7 +39,6 @@ Welcome to our full-stack web app! In the chaos of everyday life, sharing your v
 - Designed to work seamlessly on mobile devices.
 - Rate blogs by liking or disliking them with a button.
 - Assign categories and tags to your posts to keep your content well-organized and searchable.
- 
 
 ### Built With
 
@@ -51,8 +48,8 @@ Welcome to our full-stack web app! In the chaos of everyday life, sharing your v
 [![Javascript][Javascript.com]][Javascript-url]
 [![HTML][HTML.com]][HTML-url]
 
-
 <!-- USAGE EXAMPLES -->
+
 ## Website Demo
 
 <div style="text-align:center;">
@@ -66,27 +63,22 @@ Welcome to our full-stack web app! In the chaos of everyday life, sharing your v
     <img src=".demo/SignUnPage.png" width="300">
 </div>
 
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* [README Template](https://github.com/othneildrew/Best-README-Template)
-
- 
+- [README Template](https://github.com/othneildrew/Best-README-Template)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [React.com]: https://shields.io/badge/react-black?logo=react&style=for-the-badge
 [React-url]: https://react.dev/
-
 [Express.com]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
 [Express-url]: https://expressjs.com/
-
 [HTML.com]: https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white
 [HTML-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
-
 [CSS.com]: https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white
 [CSS-url]: https://developer.mozilla.org/en-US/docs/Web/CSS
-
 [Javascript.com]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
 [Javascript-url]: https://www.javascript.com/

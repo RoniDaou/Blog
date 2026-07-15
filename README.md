@@ -3,7 +3,7 @@
 <h3 align="center">The Blog Mix</h3>
 
   <p align="center">
-    Blog Smarter, Not Harder with The Blog Mix!
+    Blog Smarter, Not Harder with The Daily Blog!
     <br />
   </p>
 </div>
