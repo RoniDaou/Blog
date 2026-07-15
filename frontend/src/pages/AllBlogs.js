@@ -7,7 +7,8 @@ import { API_URL } from "../config";
 
 export default function AllBlogs({ setDisplayFooter }) {
   const { dispatch } = React.useContext(LoadingContext);
-  const { latestBlogs, dispatch: blogsDispatch } = React.useContext(LatestBlogsContext);
+  const { latestBlogs, dispatch: blogsDispatch } =
+    React.useContext(LatestBlogsContext);
 
   React.useEffect(() => {
     setDisplayFooter(true);
@@ -35,11 +36,14 @@ export default function AllBlogs({ setDisplayFooter }) {
   return (
     <main className="all-blogs--container">
       <header className="page-intro">
-        <span className="section-eyebrow">Explore BlogMix</span>
+        <span className="section-eyebrow">Explore DailyBlog</span>
         <div className="page-intro__row">
           <div>
             <h1>Stories for every curiosity.</h1>
-            <p>Search the full collection and find perspectives that match your interests.</p>
+            <p>
+              Search the full collection and find perspectives that match your
+              interests.
+            </p>
           </div>
           <div className="results-count">
             <strong>{latestBlogs.length}</strong>
@@ -58,7 +62,9 @@ export default function AllBlogs({ setDisplayFooter }) {
             <p>Try a different title or category to broaden your search.</p>
           </div>
         ) : (
-          latestBlogs.map((blog) => <BlogBoxAll key={blog._id || blog.title} blog={blog} />)
+          latestBlogs.map((blog) => (
+            <BlogBoxAll key={blog._id || blog.title} blog={blog} />
+          ))
         )}
       </section>
     </main>
