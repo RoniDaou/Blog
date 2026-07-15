@@ -15,7 +15,7 @@ export default function SignInUp({ setDisplayFooter }) {
         <section className="auth-showcase">
           <div className="auth-showcase__content">
             <span className="auth-brand">
-              <span className="brand-mark">B</span>The Daily Blog
+              <span className="brand-mark">B</span>DailyBlog
             </span>
             <span className="hero-kicker">
               <span className="material-symbols-rounded">auto_awesome</span>
