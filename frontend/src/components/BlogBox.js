@@ -9,34 +9,30 @@ import { PopularBlogsContext } from "../context/PopularBlogsContext";
 export default function BlogBox({ blog }) {
   const { title, author, category, datePublished } = blog;
   const { user } = useAuthContext();
-
-  const { dispatch: latestBlogsDispatch } =
-    React.useContext(LatestBlogsContext);
-
-  const { dispatch: popularBlogsDispatch } =
-    React.useContext(PopularBlogsContext);
-
+  const { dispatch: latestBlogsDispatch } = React.useContext(LatestBlogsContext);
+  const { dispatch: popularBlogsDispatch } = React.useContext(PopularBlogsContext);
   const navigate = useNavigate();
 
   const date = new Date(datePublished);
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDate();
-
   const likedBy = blog.likedby || [];
   const dislikedBy = blog.dislikedby || [];
-
   const userId = user?.id || user?._id;
+  const userLiked = userId ? likedBy.some((id) => String(id) === String(userId)) : false;
+  const userDisliked = userId ? dislikedBy.some((id) => String(id) === String(userId)) : false;
+  const excerpt = Array.isArray(blog.content)
+    ? blog.content.find((item, index) => index % 2 === 1 && item)?.slice(0, 120)
+    : "";
 
-  const userLiked = userId
-    ? likedBy.some((id) => String(id) === String(userId))
-    : false;
+  const dispatchReaction = (type) => {
+    const action = { type, blog_id: blog._id, user_id: userId };
+    latestBlogsDispatch(action);
+    popularBlogsDispatch(action);
+  };
 
-  const userDisliked = userId
-    ? dislikedBy.some((id) => String(id) === String(userId))
-    : false;
-
-  async function handleLike(event) {
+  async function handleReaction(event, endpoint, actionType) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -47,119 +43,62 @@ export default function BlogBox({ blog }) {
 
     try {
       await axios.post(
-        "/blogs/like",
-        {
-          _id: blog._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        },
+        endpoint,
+        { _id: blog._id },
+        { headers: { Authorization: `Bearer ${user.token}` } },
       );
-
-      latestBlogsDispatch({
-        type: "UPDATE_LIKE",
-        blog_id: blog._id,
-        user_id: userId,
-      });
-
-      popularBlogsDispatch({
-        type: "UPDATE_LIKE",
-        blog_id: blog._id,
-        user_id: userId,
-      });
+      dispatchReaction(actionType);
     } catch (error) {
-      console.error("Like error:", error.response?.data || error.message);
-    }
-  }
-
-  async function handleDislike(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!user) {
-      navigate("/signInUp");
-      return;
-    }
-
-    try {
-      await axios.post(
-        "/blogs/dislike",
-        {
-          _id: blog._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        },
-      );
-
-      latestBlogsDispatch({
-        type: "UPDATE_DISLIKE",
-        blog_id: blog._id,
-        user_id: userId,
-      });
-
-      popularBlogsDispatch({
-        type: "UPDATE_DISLIKE",
-        blog_id: blog._id,
-        user_id: userId,
-      });
-    } catch (error) {
-      console.error("Dislike error:", error.response?.data || error.message);
+      console.error("Reaction error:", error.response?.data || error.message);
     }
   }
 
   return (
-    <Link className="blog-box--container" state={{ blog }} to="/blog">
-      <div className="blog-box--info-post">
+    <article className="story-card">
+      <Link className="story-card__main" state={{ blog }} to="/blog">
         <div
-          className="blog-box--img"
-          style={{
-            backgroundImage: `url(${blog.image?.image})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        />
+          className={`story-card__image${blog.image?.image ? "" : " story-card__image--empty"}`}
+          style={blog.image?.image ? { backgroundImage: `url(${blog.image.image})` } : undefined}
+        >
+          <span className="story-card__category">{category}</span>
+        </div>
 
-        <div className="category-likes--container">
-          <p className="blog-box-category">{category}</p>
+        <div className="story-card__body">
+          <h3 className="story-card__title">{title}</h3>
+          {excerpt && <p className="story-card__excerpt">{excerpt}{excerpt.length === 120 ? "…" : ""}</p>}
+        </div>
+      </Link>
 
-          <div className="likes--container">
-            <p>{likedBy.length}</p>
-
-            <span
-              className={`material-symbols-rounded thumb-up${
-                userLiked ? " thumb--clicked" : ""
-              }`}
-              onClick={handleLike}
-            >
-              thumb_up
-            </span>
-
-            <p>{dislikedBy.length}</p>
-
-            <span
-              className={`material-symbols-rounded thumb-up${
-                userDisliked ? " thumb--clicked" : ""
-              }`}
-              onClick={handleDislike}
-            >
-              thumb_down
-            </span>
+      <div className="story-card__footer">
+        <div className="story-card__author">
+          <span className="author-avatar">{(author || "A").charAt(0).toUpperCase()}</span>
+          <div>
+            <strong>{author}</strong>
+            <span>{`${months[month]} ${day}, ${year}`}</span>
           </div>
         </div>
 
-        <h6 className="blog-box-title">{title}</h6>
+        <div className="story-reactions" aria-label="Story reactions">
+          <button
+            type="button"
+            className={userLiked ? "is-active" : ""}
+            onClick={(event) => handleReaction(event, "/blogs/like", "UPDATE_LIKE")}
+            aria-label="Like story"
+          >
+            <span className="material-symbols-rounded">thumb_up</span>
+            <span>{likedBy.length}</span>
+          </button>
+          <button
+            type="button"
+            className={userDisliked ? "is-active" : ""}
+            onClick={(event) => handleReaction(event, "/blogs/dislike", "UPDATE_DISLIKE")}
+            aria-label="Dislike story"
+          >
+            <span className="material-symbols-rounded">thumb_down</span>
+            <span>{dislikedBy.length}</span>
+          </button>
+        </div>
       </div>
-
-      <div className="blog-box--info">
-        <p className="blog-box-author">{author}</p>
-
-        <p className="blog-box-date">{`${months[month]} ${day}, ${year}`}</p>
-      </div>
-    </Link>
+    </article>
   );
 }

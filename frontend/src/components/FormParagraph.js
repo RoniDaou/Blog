@@ -1,35 +1,61 @@
-import React from 'react';
+import React from "react";
 
 export default function FormParagraph({ id, content, setContent, removeParagraph, totalParagraphs, animation }) {
-    const subtitleHTML = `subtitle${id}`;
-    const contentHTML = `content${id}`;
+  const paragraphNumber = id / 2 + 1;
 
-    // Handle content change
-    function handleContent(event) {
-        const { id, value } = event.target;
+  function handleContent(event) {
+    const fieldIndex = Number(event.target.dataset.index);
+    const { value } = event.target;
+    setContent((previous) => {
+      const next = [...previous];
+      next[fieldIndex] = value;
+      return next;
+    });
+  }
 
-        setContent((prev) => {
-            const arr = [...prev];
-            arr[id] = value;
-            return arr;
-        })
-    }
+  return (
+    <section className={`form-paragraph ${animation}`}>
+      <div className="form-paragraph__header">
+        <div>
+          <span className="paragraph-number">{String(paragraphNumber).padStart(2, "0")}</span>
+          <div>
+            <h3>Story section</h3>
+            <p>Organize your article with a clear subtitle and body.</p>
+          </div>
+        </div>
+        {totalParagraphs === id && id > 0 && (
+          <button type="button" className="remove-section-button" onClick={removeParagraph} name={id}>
+            <span className="material-symbols-rounded">delete</span>
+            Remove
+          </button>
+        )}
+      </div>
 
-    return (
-        <div className={`form-paragraph ${animation}`}>
-            <div className="new-paragraph--all-title">
-                <h6>Paragraph {id/2 + 1}</h6>
-                {totalParagraphs === id && id > 0 && <button type="button" className="green-button" id="remove-paragraph--button" onClick={removeParagraph} name={id}>Remove</button>}
-            </div>
-            <div className="form--subcontainer small-bottom-margin">
-                <label htmlFor={subtitleHTML} className="form-paragraph--subtitle">Subtitle</label>
-                <input type="text" placeholder="Subtitle" name={subtitleHTML} onChange={handleContent} value={content[id]}  id={id} />
-            </div>
+      <div className="editor-field">
+        <label htmlFor={`subtitle-${id}`}>Subtitle</label>
+        <input
+          id={`subtitle-${id}`}
+          data-index={id}
+          type="text"
+          placeholder="Give this section a clear heading"
+          name={`subtitle${id}`}
+          onChange={handleContent}
+          value={content[id]}
+        />
+      </div>
 
-            <div className="form--subcontainer no-margin">
-                <label htmlFor={contentHTML} className="form-paragraph--subtitle">Body</label>
-                <textarea placeholder="Content" name={contentHTML} onChange={handleContent} value={content[id + 1]} id={id + 1} />
-            </div>
-        </div>  
-    )
+      <div className="editor-field">
+        <label htmlFor={`content-${id}`}>Body</label>
+        <textarea
+          id={`content-${id}`}
+          data-index={id + 1}
+          placeholder="Write the main content for this section..."
+          name={`content${id}`}
+          onChange={handleContent}
+          value={content[id + 1]}
+          rows="7"
+        />
+      </div>
+    </section>
+  );
 }

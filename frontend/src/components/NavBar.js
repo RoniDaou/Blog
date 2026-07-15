@@ -1,112 +1,101 @@
-// NavBar.js
 import React from "react";
 import "../styles/NavBar.css";
-import { NavLink } from "react-router-dom";
-import { useMediaQuery } from "@mui/material";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+
+const navigationItems = [
+  { to: "/", icon: "home", label: "Home", end: true },
+  { to: "/blogs", icon: "explore", label: "Explore" },
+];
 
 export default function NavBar() {
   const { user } = React.useContext(AuthContext);
-  const isMedium = useMediaQuery("(max-width: 710px)");
   const [isMobileActive, setIsMobileActive] = React.useState(false);
-  const [navLinks, setNavLinks] = React.useState();
 
-  React.useEffect(() => {
-    setNavLinks(
-      <div
-        className={`${isMedium ? "nav-links-mobile" : "nav-links--container"}`}
-      >
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? "active" : "none")}
-          onClick={handleClick}
-        >
-          <div className="icon-text">
-            <span className="material-symbols-outlined">home</span>
-            <span className="text">Home</span>
-          </div>
-        </NavLink>
-
-        {!user && (
-          <NavLink
-            to="/signInUp"
-            className={({ isActive }) => (isActive ? "active" : "none")}
-            onClick={handleClick}
-          >
-            <div className="icon-text">
-              <span className="material-symbols-outlined">person_add</span>
-              <span className="text">Signup</span>
-            </div>
-          </NavLink>
-        )}
-
-        {user && (
-          <NavLink
-            to="/write"
-            className={({ isActive }) => (isActive ? "active" : "none")}
-            onClick={handleClick}
-          >
-            <div className="icon-text">
-              <span className="material-symbols-outlined">edit_square</span>
-              <span className="text">Post</span>
-            </div>
-          </NavLink>
-        )}
-
-        {user && (
-          <NavLink
-            to="/account"
-            className={({ isActive }) => (isActive ? "active" : "none")}
-            onClick={handleClick}
-          >
-            <div className="icon-text">
-              <span className="material-symbols-outlined">person</span>
-              <span className="text">Profile</span>
-            </div>
-          </NavLink>
-        )}
-
-        {user && (
-          <NavLink
-            to="/logout"
-            className={({ isActive }) => (isActive ? "active" : "none")}
-            onClick={handleClick}
-          >
-            <div className="icon-text">
-              <span className="material-symbols-outlined">logout</span>
-              <span className="text">Logout</span>
-            </div>
-          </NavLink>
-        )}
-      </div>,
-    );
-  }, [isMedium, user]);
-
-  function handleClick() {
-    if (isMedium) {
-      setIsMobileActive((prev) => !prev);
-    }
-  }
+  const closeMenu = () => setIsMobileActive(false);
 
   return (
-    <div className={`topnav${isMobileActive ? " topnav-active" : ""}`}>
-      <div className={isMobileActive ? "space-between" : "topnav"}>
-        <div className="nav-title">The Blog</div>
-        {isMedium ? (
-          <div
-            className={`hamburger${isMobileActive ? " active" : ""}`}
-            onClick={handleClick}
-          >
-            <span className="bar"></span>
-            <span className="bar"></span>
-            <span className="bar"></span>
-          </div>
-        ) : (
-          navLinks
-        )}
-      </div>
+    <header className="site-header">
+      <nav className="site-nav" aria-label="Primary navigation">
+        <Link to="/" className="brand" onClick={closeMenu} aria-label="BlogMix home">
+          <span className="brand-mark">B</span>
+          <span className="brand-copy">
+            <strong>BlogMix</strong>
+            <small>Ideas worth sharing</small>
+          </span>
+        </Link>
 
-      {isMedium && isMobileActive && navLinks}
-    </div>
+        <button
+          type="button"
+          className={`mobile-menu-button${isMobileActive ? " is-open" : ""}`}
+          onClick={() => setIsMobileActive((previous) => !previous)}
+          aria-label="Toggle navigation"
+          aria-expanded={isMobileActive}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <div className={`nav-content${isMobileActive ? " is-open" : ""}`}>
+          <div className="nav-links--container">
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                onClick={closeMenu}
+              >
+                <span className="material-symbols-rounded">{item.icon}</span>
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+
+            {user && (
+              <NavLink
+                to="/write"
+                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                onClick={closeMenu}
+              >
+                <span className="material-symbols-rounded">edit_square</span>
+                <span>Create</span>
+              </NavLink>
+            )}
+
+            {user && (
+              <NavLink
+                to="/account"
+                className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                onClick={closeMenu}
+              >
+                <span className="material-symbols-rounded">person</span>
+                <span>Profile</span>
+              </NavLink>
+            )}
+          </div>
+
+          <div className="nav-actions">
+            {!user ? (
+              <NavLink to="/signInUp" className="nav-sign-in" onClick={closeMenu}>
+                Sign in
+              </NavLink>
+            ) : (
+              <>
+                <Link to="/account" className="nav-user" onClick={closeMenu}>
+                  <span className="nav-user-avatar">
+                    {(user.first_name || user.email || "U").charAt(0).toUpperCase()}
+                  </span>
+                  <span className="nav-user-label">My account</span>
+                </Link>
+                <NavLink to="/logout" className="nav-logout" onClick={closeMenu} aria-label="Log out">
+                  <span className="material-symbols-rounded">logout</span>
+                </NavLink>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 }

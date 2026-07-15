@@ -73,5 +73,3 @@ export const PopularBlogsContextProvider = ({ children }) => {
         </PopularBlogsContext.Provider>
     )
 }
-
-export default { PopularBlogsContext, PopularBlogsContextProvider };

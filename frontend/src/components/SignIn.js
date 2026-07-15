@@ -1,20 +1,12 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 
-function SignIn({ isPhone, type, handleOnClick }) {
-  const [state, setState] = React.useState({
-    email: "",
-    password: "",
-  });
+function SignIn({ handleOnClick }) {
+  const [state, setState] = React.useState({ email: "", password: "" });
   const { login, error } = useLogin();
 
-  const handleChange = (evt) => {
-    const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value,
-    });
+  const handleChange = (event) => {
+    setState((previous) => ({ ...previous, [event.target.name]: event.target.value }));
   };
 
   const handleOnSubmit = (event) => {
@@ -23,61 +15,54 @@ function SignIn({ isPhone, type, handleOnClick }) {
   };
 
   return (
-    <div className="form-container sign-in-container">
-      <form className="sign-in-up-form" onSubmit={handleOnSubmit}>
-        <h1 className="sign-in-up-title">Sign In</h1>
-        {/* <span className="sign-in-up-span">Use your account</span> */}
+    <form className="auth-form" onSubmit={handleOnSubmit}>
+      <div className="auth-form__heading">
+        <span className="section-eyebrow">Welcome back</span>
+        <h2>Sign in to BlogMix</h2>
+        <p>Continue reading, writing, and managing your stories.</p>
+      </div>
 
-        <div className="write-blog-title--container">
+      <div className="auth-field">
+        <label htmlFor="signin-email">Email address</label>
+        <div className="auth-input-wrap">
+          <span className="material-symbols-rounded">mail</span>
           <input
-            type="text"
+            id="signin-email"
+            type="email"
             name="email"
             value={state.email}
             onChange={handleChange}
-            placeholder="Email"
-            className="input-sign-in-up"
+            placeholder="you@example.com"
+            required
           />
-          <p className="asterix">*</p>
         </div>
+      </div>
 
-        <div className="write-blog-title--container">
+      <div className="auth-field">
+        <label htmlFor="signin-password">Password</label>
+        <div className="auth-input-wrap">
+          <span className="material-symbols-rounded">lock</span>
           <input
+            id="signin-password"
             type="password"
             name="password"
             value={state.password}
             onChange={handleChange}
-            placeholder="Password"
-            className="input-sign-in-up"
+            placeholder="Enter your password"
+            required
           />
-          <p className="asterix">*</p>
         </div>
+      </div>
 
-        {error !== "" && (
-          <p
-            className="account-error"
-            style={{ alignSelf: "flex-start", marginTop: "5px" }}
-          >
-            {error}
-          </p>
-        )}
-        <button type="submit" className="sign-in-up-button">
-          Sign In
-        </button>
-        {isPhone && type === "signIn" && (
-          <button
-            style={{
-              border: "2px rgb(4, 170, 109) solid",
-              color: "rgb(4, 170, 109)",
-              backgroundColor: "transparent",
-            }}
-            className="sign-in-up-button"
-            onClick={() => handleOnClick("signUp")}
-          >
-            Click to Sign Up
-          </button>
-        )}
-      </form>
-    </div>
+      {error && <p className="form-error"><span className="material-symbols-rounded">error</span>{error}</p>}
+
+      <button type="submit" className="primary-button auth-submit">
+        Sign in
+        <span className="material-symbols-rounded">arrow_forward</span>
+      </button>
+
+      <p className="auth-switch">New to BlogMix? <button type="button" onClick={() => handleOnClick("signUp")}>Create an account</button></p>
+    </form>
   );
 }
 

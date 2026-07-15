@@ -1,61 +1,58 @@
 import React, { useState } from "react";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
-import { useMediaQuery } from "@mui/material";
 
 export default function SignInUp({ setDisplayFooter }) {
   const [type, setType] = useState("signIn");
-  const handleOnClick = text => {
-    if (text !== type) {
-      setType(text);
-      return;
-    }
-  };
-  
-  React.useEffect(() => {
-    setDisplayFooter(true);
-}, [])
 
-  const isPhone = useMediaQuery('(max-width: 500px');
-  const containerClass =
-    "sign-in-up--container" + (type === "signUp" ? " right-panel-active" : "");
-  
+  React.useEffect(() => {
+    setDisplayFooter(false);
+  }, [setDisplayFooter]);
+
   return (
-    <div className="sign-in-up--big-container">
-      <h2 className="align-center">Sign in/up Form</h2>
-      <div className={containerClass} id="container">
-        {(!isPhone || type === "signUp") && <SignUp isPhone={isPhone} type={type} handleOnClick={handleOnClick} />}
-        {(!isPhone || type === "signIn") && <SignIn isPhone={isPhone} type={type} handleOnClick={handleOnClick} />}
-        <div className="overlay-container">
-          <div className="overlay">
-            <div className="overlay-panel overlay-left">
-              <h1 className="sign-in-up-opening">Welcome Back!</h1>
-              <p className="sign-in-up-p">
-                To keep connected with us please login with your personal info
-              </p>
-              <button
-                className="ghost sign-in-up-button"
-                id="signIn"
-                onClick={() => handleOnClick("signIn")}
-              >
-                Sign In
-              </button>
-        
-            </div>
-            <div className="overlay-panel overlay-right">
-              <h1 className="sign-in-up-opening">Hello, Friend!</h1>
-              <p className="sign-in-up-p">Enter your personal details and start journey with us</p>
-              <button
-                className="ghost sign-in-up-button"
-                id="signUp"
-                onClick={() => handleOnClick("signUp")}
-              >
-                Sign Up
-              </button>
+    <main className="auth-page">
+      <div className="auth-shell">
+        <section className="auth-showcase">
+          <div className="auth-showcase__content">
+            <span className="auth-brand"><span className="brand-mark">B</span>BlogMix</span>
+            <span className="hero-kicker"><span className="material-symbols-rounded">auto_awesome</span>Write. Share. Connect.</span>
+            <h1>Your ideas deserve a beautiful place to live.</h1>
+            <p>Join a modern publishing community built for thoughtful stories and meaningful conversations.</p>
+            <div className="auth-benefits">
+              <div><span className="material-symbols-rounded">check_circle</span><span>Publish stories in minutes</span></div>
+              <div><span className="material-symbols-rounded">check_circle</span><span>Build your personal profile</span></div>
+              <div><span className="material-symbols-rounded">check_circle</span><span>Connect through reader reactions</span></div>
             </div>
           </div>
-        </div>
+          <div className="auth-decoration auth-decoration--one" />
+          <div className="auth-decoration auth-decoration--two" />
+        </section>
+
+        <section className="auth-panel">
+          <div className="auth-tabs" role="tablist" aria-label="Authentication options">
+            <button
+              type="button"
+              className={type === "signIn" ? "active" : ""}
+              onClick={() => setType("signIn")}
+            >
+              Sign in
+            </button>
+            <button
+              type="button"
+              className={type === "signUp" ? "active" : ""}
+              onClick={() => setType("signUp")}
+            >
+              Create account
+            </button>
+          </div>
+
+          {type === "signIn" ? (
+            <SignIn handleOnClick={setType} />
+          ) : (
+            <SignUp handleOnClick={setType} />
+          )}
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

@@ -24,5 +24,3 @@ export const LoadingContextProvider = ({ children }) => {
         </LoadingContext.Provider>
     )
 }
-
-export default { LoadingContext, LoadingContextProvider };
